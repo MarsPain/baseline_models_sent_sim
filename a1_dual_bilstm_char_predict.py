@@ -19,39 +19,39 @@ FLAGS=tf.app.flags.FLAGS
 #tf.app.flags.DEFINE_string("target_file","","target file")
 
 tf.app.flags.DEFINE_string("tokenize_style",'char',"tokenize sentence in char,word,or pinyin.default is char") #to tackle miss typed words
-tf.app.flags.DEFINE_string("ckpt_dir","dual_bilstm_char_checkpoint/","checkpoint location for the model")
-tf.app.flags.DEFINE_string("model","dual_bilstm","which model to use:dual_bilstm_cnn,dual_bilstm,dual_cnn.default is:dual_bilstm_cnn")
+tf.app.flags.DEFINE_string("ckpt_dir","dual_cnn","checkpoint location for the model")
+tf.app.flags.DEFINE_string("model","dual_cnn","which model to use:dual_bilstm_cnn,dual_bilstm,dual_cnn.default is:dual_bilstm_cnn")
 
-tf.app.flags.DEFINE_integer("embed_size",128,"embedding size") #128
-tf.app.flags.DEFINE_integer("num_filters", 32, "number of filters") #32
-tf.app.flags.DEFINE_integer("sentence_len",39,"max sentence length. length should be divide by 3, which is used by k max pooling.") #40
+tf.app.flags.DEFINE_integer("embed_size",64,"embedding size") #128
+tf.app.flags.DEFINE_integer("num_filters", 10, "number of filters") #32
+tf.app.flags.DEFINE_integer("sentence_len",21,"max sentence length. length should be divide by 3, which is used by k max pooling.") #40
 tf.app.flags.DEFINE_string("similiarity_strategy",'additive',"similiarity strategy: additive or multiply. default is additive") #to tackle miss typed words
 tf.app.flags.DEFINE_string("max_pooling_style",'chunk_max_pooling',"max_pooling_style:max_pooling,k_max_pooling,chunk_max_pooling. default: chunk_max_pooling") #extract top k feature instead of max feature(max pooling)
 
 tf.app.flags.DEFINE_integer("top_k", 3, "value of top k")
-tf.app.flags.DEFINE_string("traning_data_path","./data/atec_nlp_sim_train.csv","path of traning data.")
-tf.app.flags.DEFINE_integer("vocab_size",60000,"maximum vocab size.") #80000
-tf.app.flags.DEFINE_float("learning_rate",0.0001,"learning rate")
-tf.app.flags.DEFINE_integer("batch_size", 4, "Batch size for training/evaluating.")
+tf.app.flags.DEFINE_string("traning_data_path","./data/atec_nlp_sim_train2.csv","path of traning data.")
+tf.app.flags.DEFINE_integer("vocab_size",30000,"maximum vocab size.") #80000
+tf.app.flags.DEFINE_float("learning_rate",0.0005,"learning rate")
+tf.app.flags.DEFINE_integer("batch_size", 2, "Batch size for training/evaluating.")
 tf.app.flags.DEFINE_integer("decay_steps", 1000, "how many steps before decay learning rate.")
 tf.app.flags.DEFINE_float("decay_rate", 1.0, "Rate of decay for learning rate.")
 tf.app.flags.DEFINE_boolean("is_training",False,"is traning.true:tranining,false:testing/inference")
-tf.app.flags.DEFINE_integer("num_epochs",10,"number of epochs to run.")
+tf.app.flags.DEFINE_integer("num_epochs",15,"number of epochs to run.")
 tf.app.flags.DEFINE_integer("validate_every", 1, "Validate every validate_every epochs.")
 tf.app.flags.DEFINE_boolean("use_pretrained_embedding",False,"whether to use embedding or not.")
 tf.app.flags.DEFINE_string("word2vec_model_path","word2vec.bin","word2vec's vocabulary and vectors")
-tf.app.flags.DEFINE_string("name_scope","cnn","name scope value.")
-tf.app.flags.DEFINE_float("dropout_keep_prob", 1.0, "dropout keep probability")
+tf.app.flags.DEFINE_string("name_scope","dual_cnn","name scope value.")
+tf.app.flags.DEFINE_float("dropout_keep_prob", 0.5, "dropout keep probability")
 
 
-filter_sizes=[3,6,7,8]
+filter_sizes=[2,3,4]
 
 #def main(_):
 def predict_bilstm(inpath, outpath):
     vocabulary_word2index, vocabulary_index2label= load_vocabulary(FLAGS.traning_data_path,FLAGS.vocab_size,
                                                           name_scope=FLAGS.name_scope,tokenize_style=FLAGS.tokenize_style)
-    vocab_size = len(vocabulary_word2index);print("cnn_model.vocab_size:",vocab_size);num_classes=len(vocabulary_index2label);print("num_classes:",num_classes)
-    lineno_list, X1, X2=load_test_data(inpath, vocabulary_word2index, FLAGS.sentence_len, tokenize_style=FLAGS.tokenize_style)
+    vocab_size = len(vocabulary_word2index);print("vocab_size:",vocab_size);num_classes=len(vocabulary_index2label);print("num_classes:",num_classes)
+    lineno_list, X1, X2, BLUE_SCORE=load_test_data(inpath, vocabulary_word2index, FLAGS.sentence_len, tokenize_style=FLAGS.tokenize_style)
     #2.create session.
     config=tf.ConfigProto()
     config.gpu_options.allow_growth=True
@@ -62,14 +62,16 @@ def predict_bilstm(inpath, outpath):
                                    similiarity_strategy=FLAGS.similiarity_strategy,top_k=FLAGS.top_k,max_pooling_style=FLAGS.max_pooling_style)
         #Initialize Save
         saver=tf.train.Saver()
-        if os.path.exists(FLAGS.ckpt_dir+"checkpoint"):
+        if os.path.exists(FLAGS.ckpt_dir):
+            print("model have been found!!!!!!")
             print("Restoring Variables from Checkpoint.")
             saver.restore(sess, tf.train.latest_checkpoint(FLAGS.ckpt_dir))
         else:
             print("Not able to find Checkpoint. Going to stop now...")
-            iii=0
-            iii/0
+            # iii=0
+            # iii//0
         #3.feed data & training
+        print("Yes!!!!!!!!!!!!!!!!")
         number_of_test_data=len(X1)
         print("number_of_test_data:",number_of_test_data)
         batch_size=FLAGS.batch_size
@@ -107,5 +109,6 @@ def predict_bilstm(inpath, outpath):
 
 
 if __name__ == "__main__":
-    #tf.app.run()
+    # tf.app.run()
+    predict_bilstm("test.csv", "resulttt.csv")
     pass

@@ -21,13 +21,13 @@ from gensim.models import KeyedVectors
 
 FLAGS=tf.app.flags.FLAGS
 
-tf.app.flags.DEFINE_string("ckpt_dir","ckpt_dir_BiLSTM_CNN","checkpoint location for the model") #dual_bilstm_char_checkpoint/
+tf.app.flags.DEFINE_string("ckpt_dir","dual_cnn","checkpoint location for the model") #dual_bilstm_char_checkpoint/
 tf.app.flags.DEFINE_string("tokenize_style",'',"tokenize sentence in char,word,or pinyin.default is char") #char
-tf.app.flags.DEFINE_string("model_name","BiLSTM_CNN","which model to use:dual_bilstm_cnn,dual_bilstm,dual_cnn,mix. default is:mix")#dual_bilstm
-tf.app.flags.DEFINE_string("name_scope","BiLSTM_CNN","name scope value.") #bilstm_char
+tf.app.flags.DEFINE_string("model_name","dual_cnn","which model to use:dual_bilstm_cnn,dual_bilstm,dual_cnn,mix. default is:mix")#dual_bilstm
+tf.app.flags.DEFINE_string("name_scope","dual_cnn","name scope value.") #bilstm_char
 
 tf.app.flags.DEFINE_boolean("decay_lr_flag",True,"whether manally decay lr")
-tf.app.flags.DEFINE_integer("embed_size",100,"embedding size") #128
+tf.app.flags.DEFINE_integer("embed_size",64,"embedding size") #128
 tf.app.flags.DEFINE_integer("num_filters",10, "number of filters") #64
 tf.app.flags.DEFINE_integer("sentence_len",21,"max sentence length. length should be divide by 3, which is used by k max pooling.") #39
 tf.app.flags.DEFINE_string("similiarity_strategy",'additive',"similiarity strategy: additive or multiply. default is additive") #to tackle miss typed words

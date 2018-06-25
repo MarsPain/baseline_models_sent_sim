@@ -16,7 +16,7 @@ from data_mining.data_util_tfidf import cos_distance_bag_tfidf
 #import pickle
 
 #use pretrained word embedding to get word vocabulary and labels, and its relationship with index
-def load_vocabulary(training_data_path,vocab_size,name_scope='cnn',tokenize_style='char'):
+def load_vocabulary(training_data_path,vocab_size,name_scope='',tokenize_style='char'):
     """
     create vocabulary
     :param training_data_path:
@@ -64,7 +64,9 @@ def load_test_data(test_data_path,vocab_word2index,max_sentence_len,tokenize_sty
     word_vec_word2vec_dict = load_word_vec('data/word2vec.txt') #word embedding from word2vec
     tfidf_dict=load_tfidf_dict('data/atec_nl_sim_tfidf.txt')
     BLUE_SCORE=[]
+    print("fin:", type(fin))
     for i,line in enumerate(fin):
+        # print("Yes!!!!!!!")
         lineno, sen1, sen2 = line.strip().split('\t')
         lineno_list.append(lineno)
         sen1=sen1.decode("utf-8")
@@ -88,6 +90,7 @@ def load_test_data(test_data_path,vocab_word2index,max_sentence_len,tokenize_sty
         BLUE_SCORE.append(features_vector)
 
     test=(lineno_list,X1,X2,BLUE_SCORE)
+    print("test", test)
     return test
 
 ####many methods copy from data_util.py. the reason why not import from data_util.py is data_util.py
