@@ -5,7 +5,7 @@ sys.setdefaultencoding('utf-8') #gb2312
 import random
 import numpy as np
 from tflearn.data_utils import pad_sequences
-#from pypinyin import pinyin,lazy_pinyin
+from pypinyin import pinyin,lazy_pinyin
 
 from collections import Counter
 import os
@@ -252,6 +252,7 @@ def token_string_as_list(string,tokenize_style='char'):
     string=string.decode("utf-8")
     string=string.replace("***","*")
     length=len(string)
+    listt = []
     if tokenize_style=='char':
         listt=[string[i] for i in range(length)]
     elif tokenize_style=='word':

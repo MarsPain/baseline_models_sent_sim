@@ -13,7 +13,7 @@ from a1_dual_bilstm_cnn_model import DualBilstmCnnModel
 from data_util import create_vocabulary,load_data
 import os
 import random
-import word2vec
+# import word2vec
 from weight_boosting import compute_labels_weights,get_weights_for_current_batch,get_weights_label_as_standard_dict,init_weights_dict
 #configuration
 import gensim
@@ -21,7 +21,7 @@ from gensim.models import KeyedVectors
 
 FLAGS=tf.app.flags.FLAGS
 
-tf.app.flags.DEFINE_string("ckpt_dir","","checkpoint location for the model") #dual_bilstm_char_checkpoint/
+tf.app.flags.DEFINE_string("ckpt_dir","ckpt_dir","checkpoint location for the model") #dual_bilstm_char_checkpoint/
 tf.app.flags.DEFINE_string("tokenize_style",'',"tokenize sentence in char,word,or pinyin.default is char") #char
 tf.app.flags.DEFINE_string("model_name","","which model to use:dual_bilstm_cnn,dual_bilstm,dual_cnn,mix. default is:mix")#dual_bilstm
 tf.app.flags.DEFINE_string("name_scope","","name scope value.") #bilstm_char
@@ -43,7 +43,7 @@ tf.app.flags.DEFINE_float("decay_rate", 1.0, "Rate of decay for learning rate.")
 tf.app.flags.DEFINE_boolean("is_training",True,"is traning.true:tranining,false:testing/inference")
 tf.app.flags.DEFINE_integer("num_epochs",15,"number of epochs to run.")
 tf.app.flags.DEFINE_integer("validate_every", 1, "Validate every validate_every epochs.")
-tf.app.flags.DEFINE_boolean("use_pretrained_embedding",True,"whether to use embedding or not.")
+tf.app.flags.DEFINE_boolean("use_pretrained_embedding",False,"whether to use embedding or not.")
 tf.app.flags.DEFINE_string("word2vec_model_path","data/news_12g_baidubaike_20g_novel_90g_embedding_64.bin","word2vec's vocabulary and vectors")
 #tf.app.flags.DEFINE_string("word2vec_model_path","data/fasttext_fin_model_50.vec","word2vec's vocabulary and vectors")
 tf.app.flags.DEFINE_float("dropout_keep_prob", 0.5, "dropout keep probability")
@@ -145,7 +145,7 @@ def main(_):
                 print("【Validation】Epoch %d\t Loss:%.3f\tAcc %.3f\tF1 Score:%.3f\tPrecision:%.3f\tRecall:%.3f" % (epoch,eval_loss,eval_accc,f1_scoree,precision,recall))
                 #save model to checkpoint
                 if eval_accc*1.05>best_acc and f1_scoree>best_f1_score:
-                    save_path = FLAGS.ckpt_dir + "model.ckpt"
+                    save_path = FLAGS.ckpt_dir + "/model.ckpt"
                     print("going to save model. eval_f1_score:",f1_scoree,";previous best f1 score:",best_f1_score, ";eval_acc",str(eval_accc),";previous best_acc:",str(best_acc))
                     saver.save(sess,save_path,global_step=epoch)
                     best_acc=eval_accc
