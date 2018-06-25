@@ -1,3 +1,3 @@
 #/bin/bash
 
-python main_ensemble.py $1 $2
+python a1_dual_bilstm_char_predict.py $1 $2
