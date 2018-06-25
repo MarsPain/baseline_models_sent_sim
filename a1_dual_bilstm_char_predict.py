@@ -32,7 +32,7 @@ tf.app.flags.DEFINE_integer("top_k", 3, "value of top k")
 tf.app.flags.DEFINE_string("traning_data_path","./data/atec_nlp_sim_train2.csv","path of traning data.")
 tf.app.flags.DEFINE_integer("vocab_size",30000,"maximum vocab size.") #80000
 tf.app.flags.DEFINE_float("learning_rate",0.0005,"learning rate")
-tf.app.flags.DEFINE_integer("batch_size", 2, "Batch size for training/evaluating.")
+tf.app.flags.DEFINE_integer("batch_size", 1, "Batch size for training/evaluating.")
 tf.app.flags.DEFINE_integer("decay_steps", 1000, "how many steps before decay learning rate.")
 tf.app.flags.DEFINE_float("decay_rate", 1.0, "Rate of decay for learning rate.")
 tf.app.flags.DEFINE_boolean("is_training",False,"is traning.true:tranining,false:testing/inference")
@@ -52,6 +52,8 @@ def predict_bilstm(inpath, outpath):
                                                           name_scope=FLAGS.name_scope,tokenize_style=FLAGS.tokenize_style)
     vocab_size = len(vocabulary_word2index);print("vocab_size:",vocab_size);num_classes=len(vocabulary_index2label);print("num_classes:",num_classes)
     lineno_list, X1, X2, BLUE_SCORE=load_test_data(inpath, vocabulary_word2index, FLAGS.sentence_len, tokenize_style=FLAGS.tokenize_style)
+    length_data_mining_features = len(BLUE_SCORE[0])
+    print("BLUE_SCORE", len(BLUE_SCORE), len(BLUE_SCORE[0]), BLUE_SCORE)
     #2.create session.
     config=tf.ConfigProto()
     config.gpu_options.allow_growth=True
@@ -59,7 +61,8 @@ def predict_bilstm(inpath, outpath):
         #Instantiate Model
         textCNN=DualBilstmCnnModel(filter_sizes,FLAGS.num_filters,num_classes, FLAGS.learning_rate, FLAGS.batch_size, FLAGS.decay_steps,
                         FLAGS.decay_rate,FLAGS.sentence_len,vocab_size,FLAGS.embed_size,FLAGS.is_training,model=FLAGS.model,
-                                   similiarity_strategy=FLAGS.similiarity_strategy,top_k=FLAGS.top_k,max_pooling_style=FLAGS.max_pooling_style)
+                                   similiarity_strategy=FLAGS.similiarity_strategy,top_k=FLAGS.top_k,max_pooling_style=FLAGS.max_pooling_style,
+                                   length_data_mining_features=length_data_mining_features)
         #Initialize Save
         saver=tf.train.Saver()
         if os.path.exists(FLAGS.ckpt_dir):
@@ -94,13 +97,15 @@ def predict_bilstm(inpath, outpath):
                 end=(i+1)*batch_size
                 feed_dict = {textCNN.input_x1: X1[start:end],textCNN.input_x2: X2[start:end],
                              textCNN.dropout_keep_prob: FLAGS.dropout_keep_prob,
-                             textCNN.iter: iteration,textCNN.tst: not FLAGS.is_training}
+                             textCNN.iter: iteration,textCNN.tst: not FLAGS.is_training,
+                             textCNN.input_bluescores: BLUE_SCORE[start:end]}
                 print(i*batch_size,end)
             else:
                 end=number_of_test_data-(batch_size*int(number_of_test_data%batch_size))
                 feed_dict = {textCNN.input_x1: X1[start:end],textCNN.input_x2: X2[start:end],
                              textCNN.dropout_keep_prob: FLAGS.dropout_keep_prob,
-                             textCNN.iter: iteration,textCNN.tst: not FLAGS.is_training}
+                             textCNN.iter: iteration,textCNN.tst: not FLAGS.is_training,
+                             textCNN.input_bluescores: BLUE_SCORE[start:end]}
                 print("start:",i*batch_size,";end:",end)
             logits=sess.run(textCNN.logits,feed_dict)
             label_list=get_label_by_logits(logits,vocabulary_index2label)

@@ -119,7 +119,7 @@ def load_data(traning_data_path,vocab_word2index, vocab_label2index,sentence_len
     return train,valid,test,true_label_pert
 
 #use pretrained word embedding to get word vocabulary and labels, and its relationship with index
-def create_vocabulary(training_data_path,vocab_size,name_scope='cnn',tokenize_style='char'):
+def create_vocabulary(training_data_path,vocab_size,name_scope='',tokenize_style='char'):
     """
     create vocabulary
     :param training_data_path:
