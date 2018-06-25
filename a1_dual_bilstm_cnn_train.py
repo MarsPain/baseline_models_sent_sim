@@ -35,11 +35,11 @@ tf.app.flags.DEFINE_string("max_pooling_style",'chunk_max_pooling',"max_pooling_
 
 tf.app.flags.DEFINE_integer("top_k", 3, "value of top k")
 tf.app.flags.DEFINE_string("traning_data_path","./data/atec_nlp_sim_train2.csv","path of traning data.")
-tf.app.flags.DEFINE_integer("vocab_size",30000,"maximum vocab size.") #80000
-tf.app.flags.DEFINE_float("learning_rate",0.0005,"learning rate") #0.001
+tf.app.flags.DEFINE_integer("vocab_size",80000,"maximum vocab size.") #80000
+tf.app.flags.DEFINE_float("learning_rate",0.01,"learning rate") #0.001
 tf.app.flags.DEFINE_integer("batch_size", 200, "Batch size for training/evaluating.")
-tf.app.flags.DEFINE_integer("decay_steps", 1000, "how many steps before decay learning rate.")
-tf.app.flags.DEFINE_float("decay_rate", 1.0, "Rate of decay for learning rate.")
+tf.app.flags.DEFINE_integer("decay_steps", 1000000, "how many steps before decay learning rate.")
+tf.app.flags.DEFINE_float("decay_rate", 0.000001, "Rate of decay for learning rate.")
 tf.app.flags.DEFINE_boolean("is_training",True,"is traning.true:tranining,false:testing/inference")
 tf.app.flags.DEFINE_integer("num_epochs",100,"number of epochs to run.")
 tf.app.flags.DEFINE_integer("validate_every", 1, "Validate every validate_every epochs.")
