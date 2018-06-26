@@ -18,8 +18,8 @@ FLAGS=tf.app.flags.FLAGS
 #tf.app.flags.DEFINE_string("test_data_path","","test data")
 #tf.app.flags.DEFINE_string("target_file","","target file")
 
-tf.app.flags.DEFINE_string("tokenize_style",'char',"tokenize sentence in char,word,or pinyin.default is char") #to tackle miss typed words
-tf.app.flags.DEFINE_string("ckpt_dir","dual_bilstm_1","checkpoint location for the model")
+tf.app.flags.DEFINE_string("tokenize_style",'word',"tokenize sentence in char,word,or pinyin.default is char") #to tackle miss typed words
+tf.app.flags.DEFINE_string("ckpt_dir","dual_bilstm_2","checkpoint location for the model")
 tf.app.flags.DEFINE_string("model","dual_bilstm","which model to use:dual_bilstm_cnn,dual_bilstm,dual_cnn.default is:dual_bilstm_cnn")
 
 tf.app.flags.DEFINE_integer("embed_size",128,"embedding size") #128
@@ -115,7 +115,7 @@ def predict_bilstm(inpath, outpath):
 
 if __name__ == "__main__":
     #脚本运行、用于提交代码
-    # args = sys.argv
-    # predict_bilstm(args[1], args[2])
+    args = sys.argv
+    predict_bilstm(args[1], args[2])
     #本地测试
-    predict_bilstm("test.csv", "resulttt.csv")
+    # predict_bilstm("test.csv", "resulttt.csv")
