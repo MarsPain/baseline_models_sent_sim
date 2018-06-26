@@ -21,10 +21,10 @@ from gensim.models import KeyedVectors
 
 FLAGS=tf.app.flags.FLAGS
 
-tf.app.flags.DEFINE_string("ckpt_dir","dual_cnn_1","checkpoint location for the model") #dual_bilstm_char_checkpoint/
+tf.app.flags.DEFINE_string("ckpt_dir","dual_bilstm_1","checkpoint location for the model") #dual_bilstm_char_checkpoint/
 tf.app.flags.DEFINE_string("tokenize_style",'',"tokenize sentence in char,word,or pinyin.default is char") #char
-tf.app.flags.DEFINE_string("model_name","dual_cnn","which model to use:dual_bilstm_cnn,dual_bilstm,dual_cnn,mix. default is:mix")#dual_bilstm
-tf.app.flags.DEFINE_string("name_scope","dual_cnn_1","name scope value.") #bilstm_char
+tf.app.flags.DEFINE_string("model_name","dual_bilstm","which model to use:dual_bilstm_cnn,dual_bilstm,dual_cnn,mix. default is:mix")#dual_bilstm
+tf.app.flags.DEFINE_string("name_scope","dual_bilstm_1","name scope value.") #bilstm_char
 
 tf.app.flags.DEFINE_boolean("decay_lr_flag",True,"whether manally decay lr")
 tf.app.flags.DEFINE_integer("embed_size",128,"embedding size") #128
@@ -36,12 +36,12 @@ tf.app.flags.DEFINE_string("max_pooling_style",'chunk_max_pooling',"max_pooling_
 tf.app.flags.DEFINE_integer("top_k", 3, "value of top k")
 tf.app.flags.DEFINE_string("traning_data_path","./data/atec_nlp_sim_train2.csv","path of traning data.")
 tf.app.flags.DEFINE_integer("vocab_size",80000,"maximum vocab size.") #80000
-tf.app.flags.DEFINE_float("learning_rate",0.01,"learning rate") #0.001
+tf.app.flags.DEFINE_float("learning_rate",0.001,"learning rate") #0.001
 tf.app.flags.DEFINE_integer("batch_size", 200, "Batch size for training/evaluating.")
-tf.app.flags.DEFINE_integer("decay_steps", 1000000, "how many steps before decay learning rate.")
-tf.app.flags.DEFINE_float("decay_rate", 0.000001, "Rate of decay for learning rate.")
+tf.app.flags.DEFINE_integer("decay_steps", 10000000, "how many steps before decay learning rate.")
+tf.app.flags.DEFINE_float("decay_rate", 0.0000001, "Rate of decay for learning rate.")
 tf.app.flags.DEFINE_boolean("is_training",True,"is traning.true:tranining,false:testing/inference")
-tf.app.flags.DEFINE_integer("num_epochs",100,"number of epochs to run.")
+tf.app.flags.DEFINE_integer("num_epochs",50,"number of epochs to run.")
 tf.app.flags.DEFINE_integer("validate_every", 1, "Validate every validate_every epochs.")
 tf.app.flags.DEFINE_boolean("use_pretrained_embedding",False,"whether to use embedding or not.")
 # tf.app.flags.DEFINE_string("word2vec_model_path","data/news_12g_baidubaike_20g_novel_90g_embedding_64.bin","word2vec's vocabulary and vectors")
