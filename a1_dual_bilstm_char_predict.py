@@ -9,7 +9,7 @@ import tensorflow as tf
 import numpy as np
 from a1_dual_bilstm_cnn_model import DualBilstmCnnModel
 from data_util_test import load_vocabulary,load_test_data,get_label_by_logits,write_predict_result
-from data_util import create_vocabulary
+# from data_util import create_vocabulary
 import os
 #import word2vec
 
@@ -22,6 +22,7 @@ FLAGS=tf.app.flags.FLAGS
 tf.app.flags.DEFINE_string("tokenize_style",'word',"tokenize sentence in char,word,or pinyin.default is char") #to tackle miss typed words
 tf.app.flags.DEFINE_string("ckpt_dir","dual_cnn_2","checkpoint location for the model")
 tf.app.flags.DEFINE_string("model","dual_cnn","which model to use:dual_bilstm_cnn,dual_bilstm,dual_cnn.default is:dual_bilstm_cnn")
+tf.app.flags.DEFINE_string("name_scope","dual_cnn_2","name scope value.")
 
 tf.app.flags.DEFINE_integer("embed_size",128,"embedding size") #128
 tf.app.flags.DEFINE_integer("num_filters", 64, "number of filters") #32
@@ -41,7 +42,6 @@ tf.app.flags.DEFINE_integer("num_epochs",15,"number of epochs to run.")
 tf.app.flags.DEFINE_integer("validate_every", 1, "Validate every validate_every epochs.")
 tf.app.flags.DEFINE_boolean("use_pretrained_embedding",False,"whether to use embedding or not.")
 tf.app.flags.DEFINE_string("word2vec_model_path","word2vec.bin","word2vec's vocabulary and vectors")
-tf.app.flags.DEFINE_string("name_scope","dual_cnn","name scope value.")
 tf.app.flags.DEFINE_float("dropout_keep_prob", 0.5, "dropout keep probability")
 
 
@@ -49,8 +49,9 @@ filter_sizes=[2,3,4]
 
 #def main(_):
 def predict_bilstm(inpath, outpath):
-    vocabulary_word2index, vocabulary_index2word, vocabulary_label2index, vocabulary_index2label= create_vocabulary(FLAGS.traning_data_path,FLAGS.vocab_size,
-                                                          name_scope=FLAGS.name_scope,tokenize_style=FLAGS.tokenize_style)
+    vocabulary_word2index, vocabulary_index2label= load_vocabulary(FLAGS.traning_data_path,FLAGS.vocab_size,
+                                                                                              name_scope=FLAGS.name_scope,tokenize_style=FLAGS.tokenize_style)
+    # print("vocabulary_word2index", vocabulary_word2index)
     vocab_size = len(vocabulary_word2index);print("vocab_size:",vocab_size);num_classes=len(vocabulary_index2label);print("num_classes:",num_classes)
     lineno_list, X1, X2, BLUE_SCORE=load_test_data(inpath, vocabulary_word2index, FLAGS.sentence_len, tokenize_style=FLAGS.tokenize_style)
     length_data_mining_features = len(BLUE_SCORE[0])
@@ -116,7 +117,7 @@ def predict_bilstm(inpath, outpath):
 
 if __name__ == "__main__":
     #脚本运行、用于提交代码
-    # args = sys.argv
-    # predict_bilstm(args[1], args[2])
+    args = sys.argv
+    predict_bilstm(args[1], args[2])
     #本地测试
-    predict_bilstm("test.csv", "resulttt.csv")
+    # predict_bilstm("test.csv", "resulttt.csv")
