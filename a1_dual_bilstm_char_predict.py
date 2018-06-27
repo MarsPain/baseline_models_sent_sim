@@ -9,6 +9,7 @@ import tensorflow as tf
 import numpy as np
 from a1_dual_bilstm_cnn_model import DualBilstmCnnModel
 from data_util_test import load_vocabulary,load_test_data,get_label_by_logits,write_predict_result
+from data_util import create_vocabulary
 import os
 #import word2vec
 
@@ -19,8 +20,8 @@ FLAGS=tf.app.flags.FLAGS
 #tf.app.flags.DEFINE_string("target_file","","target file")
 
 tf.app.flags.DEFINE_string("tokenize_style",'word',"tokenize sentence in char,word,or pinyin.default is char") #to tackle miss typed words
-tf.app.flags.DEFINE_string("ckpt_dir","dual_bilstm_2","checkpoint location for the model")
-tf.app.flags.DEFINE_string("model","dual_bilstm","which model to use:dual_bilstm_cnn,dual_bilstm,dual_cnn.default is:dual_bilstm_cnn")
+tf.app.flags.DEFINE_string("ckpt_dir","dual_cnn_2","checkpoint location for the model")
+tf.app.flags.DEFINE_string("model","dual_cnn","which model to use:dual_bilstm_cnn,dual_bilstm,dual_cnn.default is:dual_bilstm_cnn")
 
 tf.app.flags.DEFINE_integer("embed_size",128,"embedding size") #128
 tf.app.flags.DEFINE_integer("num_filters", 64, "number of filters") #32
@@ -30,7 +31,7 @@ tf.app.flags.DEFINE_string("max_pooling_style",'chunk_max_pooling',"max_pooling_
 
 tf.app.flags.DEFINE_integer("top_k", 3, "value of top k")
 tf.app.flags.DEFINE_string("traning_data_path","./data/atec_nlp_sim_train2.csv","path of traning data.")
-tf.app.flags.DEFINE_integer("vocab_size",30000,"maximum vocab size.") #80000
+tf.app.flags.DEFINE_integer("vocab_size",80000,"maximum vocab size.") #80000
 tf.app.flags.DEFINE_float("learning_rate",0.0005,"learning rate")
 tf.app.flags.DEFINE_integer("batch_size", 1, "Batch size for training/evaluating.")
 tf.app.flags.DEFINE_integer("decay_steps", 1000, "how many steps before decay learning rate.")
@@ -48,7 +49,7 @@ filter_sizes=[2,3,4]
 
 #def main(_):
 def predict_bilstm(inpath, outpath):
-    vocabulary_word2index, vocabulary_index2label= load_vocabulary(FLAGS.traning_data_path,FLAGS.vocab_size,
+    vocabulary_word2index, vocabulary_index2word, vocabulary_label2index, vocabulary_index2label= create_vocabulary(FLAGS.traning_data_path,FLAGS.vocab_size,
                                                           name_scope=FLAGS.name_scope,tokenize_style=FLAGS.tokenize_style)
     vocab_size = len(vocabulary_word2index);print("vocab_size:",vocab_size);num_classes=len(vocabulary_index2label);print("num_classes:",num_classes)
     lineno_list, X1, X2, BLUE_SCORE=load_test_data(inpath, vocabulary_word2index, FLAGS.sentence_len, tokenize_style=FLAGS.tokenize_style)
@@ -115,7 +116,7 @@ def predict_bilstm(inpath, outpath):
 
 if __name__ == "__main__":
     #脚本运行、用于提交代码
-    args = sys.argv
-    predict_bilstm(args[1], args[2])
+    # args = sys.argv
+    # predict_bilstm(args[1], args[2])
     #本地测试
-    # predict_bilstm("test.csv", "resulttt.csv")
+    predict_bilstm("test.csv", "resulttt.csv")
