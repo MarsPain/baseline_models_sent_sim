@@ -231,6 +231,7 @@ def do_eval(sess,textCNN,evalX1,evalX2,evalBlueScores,evalY,iteration,vocabulary
         eval_loss,eval_accc,eval_counter=eval_loss+curr_eval_loss,eval_accc+curr_accc,eval_counter+1
         eval_true_positive,eval_false_positive=eval_true_positive+true_positive,eval_false_positive+false_positive
         eval_true_negative,eval_false_negative=eval_true_negative+true_negative,eval_false_negative+false_negative
+        # print("logits", type(logits), "evalY:", type(evalY))
         weights_label = compute_labels_weights(weights_label, logits, evalY[start:end]) #compute_labels_weights(weights_label,logits,labels)
     print("true_positive:",eval_true_positive,";false_positive:",eval_false_positive,";true_negative:",eval_true_negative,";false_negative:",eval_false_negative)
     p=float(eval_true_positive)/float(eval_true_positive+eval_false_positive+small_value)

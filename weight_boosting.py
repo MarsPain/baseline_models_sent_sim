@@ -54,6 +54,7 @@ def get_weights_for_current_batch(answer_list,weights_dict):
         #    weights_list_batch[i]=2.0
         #else:
         #    weights_list_batch[i]=1.0
+    # print("weights_list_batch:", len(weights_list_batch))
     return weights_list_batch
 
 #3.compute loss using cross entropy with weights
