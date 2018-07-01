@@ -22,10 +22,10 @@ from gensim.models import KeyedVectors
 
 FLAGS=tf.app.flags.FLAGS
 
-tf.app.flags.DEFINE_string("ckpt_dir","dual_cnn_3","checkpoint location for the model") #dual_bilstm_char_checkpoint/
+tf.app.flags.DEFINE_string("ckpt_dir","dual_cnn_4","checkpoint location for the model") #dual_bilstm_char_checkpoint/
 tf.app.flags.DEFINE_string("tokenize_style",'word',"tokenize sentence in char,word,or pinyin.default is char") #char
 tf.app.flags.DEFINE_string("model_name","dual_cnn","which model to use:dual_bilstm_cnn,dual_bilstm,dual_cnn,mix. default is:mix")#dual_bilstm
-tf.app.flags.DEFINE_string("name_scope","dual_cnn_3","name scope value.") #bilstm_char
+tf.app.flags.DEFINE_string("name_scope","dual_cnn_4","name scope value.") #bilstm_char
 
 tf.app.flags.DEFINE_boolean("decay_lr_flag",True,"whether manally decay lr")
 tf.app.flags.DEFINE_integer("embed_size",256,"embedding size") #128
@@ -60,7 +60,7 @@ def main(_):
     # # print("vocabulary_word2index", vocabulary_word2index)
     vocab_size = len(vocabulary_word2index);print("cnn_model.vocab_size:",vocab_size);num_classes=len(vocabulary_index2label);print("num_classes:",num_classes)
     # train, valid, test,true_label_percent= load_data(FLAGS.traning_data_path,vocabulary_word2index, vocabulary_label2index,FLAGS.sentence_len,FLAGS.name_scope,tokenize_style=FLAGS.tokenize_style)
-    with open("./data/data_v1") as f:
+    with open("./cache_dual_cnn_2/train_valid_test.pik") as f:
         train, valid, test, true_label_percent = pickle.load(f)
     trainX1,trainX2, trainBlueScores,trainY = train
     print("train_nums:", len(trainX1))
