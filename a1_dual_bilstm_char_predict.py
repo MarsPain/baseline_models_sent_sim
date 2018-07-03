@@ -24,8 +24,8 @@ tf.app.flags.DEFINE_string("ckpt_dir","dual_cnn_4","checkpoint location for the 
 tf.app.flags.DEFINE_string("model","dual_cnn","which model to use:dual_bilstm_cnn,dual_bilstm,dual_cnn.default is:dual_bilstm_cnn")
 tf.app.flags.DEFINE_string("name_scope","dual_cnn_4","name scope value.")
 
-tf.app.flags.DEFINE_integer("embed_size",256,"embedding size") #128
-tf.app.flags.DEFINE_integer("num_filters", 128, "number of filters") #32
+tf.app.flags.DEFINE_integer("embed_size",50,"embedding size") #128
+tf.app.flags.DEFINE_integer("num_filters", 64, "number of filters") #32
 tf.app.flags.DEFINE_integer("sentence_len",39,"max sentence length. length should be divide by 3, which is used by k max pooling.") #40
 tf.app.flags.DEFINE_string("similiarity_strategy",'additive',"similiarity strategy: additive or multiply. default is additive") #to tackle miss typed words
 tf.app.flags.DEFINE_string("max_pooling_style",'chunk_max_pooling',"max_pooling_style:max_pooling,k_max_pooling,chunk_max_pooling. default: chunk_max_pooling") #extract top k feature instead of max feature(max pooling)

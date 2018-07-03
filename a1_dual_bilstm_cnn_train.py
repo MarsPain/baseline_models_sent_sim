@@ -35,7 +35,7 @@ tf.app.flags.DEFINE_string("similiarity_strategy",'additive',"similiarity strate
 tf.app.flags.DEFINE_string("max_pooling_style",'chunk_max_pooling',"max_pooling_style:max_pooling,k_max_pooling,chunk_max_pooling. default: chunk_max_pooling") #extract top k feature instead of max feature(max pooling)
 
 tf.app.flags.DEFINE_integer("top_k", 3, "value of top k")
-tf.app.flags.DEFINE_string("traning_data_path","data/atec_nlp_sim_train_data.csv","path of traning data.")
+tf.app.flags.DEFINE_string("traning_data_path","data/atec_nlp_sim_train.csv","path of traning data.")
 tf.app.flags.DEFINE_integer("vocab_size",13422,"maximum vocab size.") #80000
 tf.app.flags.DEFINE_float("learning_rate",0.001,"learning rate") #0.001
 tf.app.flags.DEFINE_integer("batch_size", 64, "Batch size for training/evaluating.")
