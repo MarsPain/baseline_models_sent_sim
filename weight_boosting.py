@@ -50,6 +50,7 @@ def get_weights_for_current_batch(answer_list,weights_dict):
     for i,label in enumerate(answer_list):
         acc=weights_dict[label]
         weights_list_batch[i]=min(1.3,1.0/(acc+0.000001)) ### ODO TODO TODO TODO
+        # print("weights:", i, label, acc, weights_list_batch[i])
         #if label==1:
         #    weights_list_batch[i]=2.0
         #else:
@@ -64,13 +65,14 @@ def loss(logits,labels,weights):
 
 #4. init weights dict
 def init_weights_dict(vocabulary_label2index):
+    print("vocabulary_label2index:", vocabulary_label2index)
     weights_dict={}
     for label,index in vocabulary_label2index.items():
         init_weights_dict(weights_dict)
     return weights_dict
 
 def init_weights_dict(weights_dict):
-    weights_dict[TRUE_LABEL_INDEX]=0.7777 #TODO TODO TODO TODO
+    weights_dict[TRUE_LABEL_INDEX]=0.2 #TODO TODO TODO TODO
     weights_dict[FALSE_LABEL_INDEX] = 1.0
     return weights_dict
 
