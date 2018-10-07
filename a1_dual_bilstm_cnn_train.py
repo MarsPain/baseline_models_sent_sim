@@ -54,7 +54,7 @@ filter_sizes=[2,3,4]
 
 #1.load data(X:list of lint,y:int). 2.create session. 3.feed data. 4.training (5.validation) ,(6.prediction)
 def main(_):
-    # 测试branch的使用,测试如何在本地分别使用主分支和子分支
+    # 测试branch的使用,测试如何在本地分别使用主分支和子分支。（测试在有冲突的情况下如何合并分支）
     #if FLAGS.use_pingyin:
     vocabulary_word2index, vocabulary_index2word, vocabulary_label2index, vocabulary_index2label= create_vocabulary(FLAGS.traning_data_path,FLAGS.vocab_size,
                                                                                               name_scope=FLAGS.name_scope,tokenize_style=FLAGS.tokenize_style)
